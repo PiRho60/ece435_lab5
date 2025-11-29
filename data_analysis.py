@@ -74,5 +74,17 @@ def plot_time_and_fft(file: str):
     plt.show()
 
 
+
+def plot_fft(file: str):
+    """Plot data from CSV file."""
+    x_data, fft_data = read_csv(file)
+    plt.plot(x_data, fft_data)
+    plt.xlabel("X")
+    plt.ylabel("FFT")
+    plt.grid(True)
+    plt.show()
+
+
 if __name__ == "__main__":
     plot_time_and_fft("scope data lab 5/scope_1.csv")
+    plot_fft("scope data lab 5/scope_2.csv")
