@@ -5,11 +5,11 @@ from pathlib import Path
 import csv
 
 # ==== User settings ====
-TIME_FILE = "scope_data_lab_5/scope_1.csv"   # time-domain CSV
-FREQ_FILE = "scope_data_lab_5/scope_2.csv"   # set to None if you don't have a freq-domain CSV
+TIME_FILE = "scope_data_lab_5/scope_10.csv"   # time-domain CSV
+FREQ_FILE = "scope_data_lab_5/scope_12.csv"   # set to None if you don't have a freq-domain CSV
 
 SAVE_COMPUTED_FFT_CSV = True
-COMPUTED_FFT_CSV = "scope_data_lab_5/scope_1_fft_from_python.csv"
+COMPUTED_FFT_CSV = "scope_data_lab_5/scope_trial_fft_from_python.csv"
 
 # Any FFT bins below this level will be floored to this value (dBV)
 DBV_FLOOR = -110.0
