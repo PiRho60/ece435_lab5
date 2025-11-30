@@ -1,6 +1,7 @@
 from typing import Tuple
 from matplotlib import pyplot as plt
 import numpy as np
+import os
 
 
 def read_csv(file: str) -> Tuple[np.ndarray, np.ndarray]:
@@ -9,7 +10,7 @@ def read_csv(file: str) -> Tuple[np.ndarray, np.ndarray]:
         file,
         delimiter=",",
         skip_header=2,   # adjust if your header length is different
-        usecols=(0, 1),  # time + signal
+        usecols=(0, 1),  # time + signal (or freq + mag for FFT files)
     )
 
     # Handle case where only one row is returned
@@ -20,8 +21,8 @@ def read_csv(file: str) -> Tuple[np.ndarray, np.ndarray]:
     mask = np.isfinite(data).all(axis=1)
     data = data[mask]
 
-    x_data = data[:, 0]  # time
-    y_data = data[:, 1]  # signal
+    x_data = data[:, 0]
+    y_data = data[:, 1]
     return x_data, y_data
 
 
@@ -60,7 +61,7 @@ def plot_time_and_fft(file: str):
     ax1.plot(t, y)
     ax1.set_xlabel("Time (s)")
     ax1.set_ylabel("Amplitude")
-    ax1.set_title("Time-domain Signal")
+    ax1.set_title(f"Time-domain Signal\n{file}")
     ax1.grid(True)
 
     # Frequency domain
@@ -74,17 +75,27 @@ def plot_time_and_fft(file: str):
     plt.show()
 
 
-
 def plot_fft(file: str):
-    """Plot data from CSV file."""
+    """Plot data from CSV file (frequency vs amplitude)."""
     x_data, fft_data = read_csv(file)
+    plt.figure()
     plt.plot(x_data, fft_data)
-    plt.xlabel("X")
-    plt.ylabel("FFT")
+    plt.xlabel("Frequency (Hz)")
+    plt.ylabel("Amplitude (dBV)")
+    plt.title(f"FFT: {os.path.basename(file)}")
     plt.grid(True)
+    plt.tight_layout()
     plt.show()
 
 
 if __name__ == "__main__":
-    plot_time_and_fft("scope data lab 5/scope_1.csv")
-    plot_fft("scope data lab 5/scope_2.csv")
+    FFT_DIR = "oscilloscope_fft_data"
+
+    # Loop over all CSV files in FFT_DIR and make a separate plot for each
+    for fname in sorted(os.listdir(FFT_DIR)):
+        if not fname.lower().endswith(".csv"):
+            continue  # skip non-CSV files
+
+        file_path = os.path.join(FFT_DIR, fname)
+        print(f"Plotting {file_path}")
+        plot_fft(file_path)
